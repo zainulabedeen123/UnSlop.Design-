@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AppLayout } from '@/components/AppLayout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Book, FileText, Rocket, Code, Zap, Layout, Package, Github } from 'lucide-react'
+import { Book, FileText, Rocket, Zap, Layout, Package, Github } from 'lucide-react'
 
 interface DocSection {
   id: string
