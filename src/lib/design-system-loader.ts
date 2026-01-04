@@ -11,6 +11,36 @@ const designSystemFiles = import.meta.glob('/product/design-system/*.json', {
 }) as Record<string, { default: Record<string, string> }>
 
 /**
+ * Parse color tokens from JSON object
+ */
+export function parseColorTokens(colors: Record<string, string>): ColorTokens | null {
+  if (!colors.primary || !colors.secondary || !colors.neutral) {
+    return null
+  }
+
+  return {
+    primary: colors.primary,
+    secondary: colors.secondary,
+    neutral: colors.neutral,
+  }
+}
+
+/**
+ * Parse typography tokens from JSON object
+ */
+export function parseTypographyTokens(typography: Record<string, string>): TypographyTokens | null {
+  if (!typography.heading || !typography.body) {
+    return null
+  }
+
+  return {
+    heading: typography.heading,
+    body: typography.body,
+    mono: typography.mono || 'IBM Plex Mono',
+  }
+}
+
+/**
  * Load color tokens from colors.json
  *
  * Expected format:
@@ -24,16 +54,7 @@ export function loadColorTokens(): ColorTokens | null {
   const colorsModule = designSystemFiles['/product/design-system/colors.json']
   if (!colorsModule?.default) return null
 
-  const colors = colorsModule.default
-  if (!colors.primary || !colors.secondary || !colors.neutral) {
-    return null
-  }
-
-  return {
-    primary: colors.primary,
-    secondary: colors.secondary,
-    neutral: colors.neutral,
-  }
+  return parseColorTokens(colorsModule.default)
 }
 
 /**
@@ -50,16 +71,7 @@ export function loadTypographyTokens(): TypographyTokens | null {
   const typographyModule = designSystemFiles['/product/design-system/typography.json']
   if (!typographyModule?.default) return null
 
-  const typography = typographyModule.default
-  if (!typography.heading || !typography.body) {
-    return null
-  }
-
-  return {
-    heading: typography.heading,
-    body: typography.body,
-    mono: typography.mono || 'IBM Plex Mono',
-  }
+  return parseTypographyTokens(typographyModule.default)
 }
 
 /**

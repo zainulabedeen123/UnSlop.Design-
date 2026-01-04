@@ -113,9 +113,10 @@ class RuntimeFileLoader {
 
       // List files
       const files: string[] = []
-      for await (const entry of currentDir.values()) {
+      // @ts-ignore - TypeScript doesn't recognize FileSystemDirectoryHandle as async iterable
+      for await (const [name, entry] of currentDir.entries()) {
         if (entry.kind === 'file') {
-          files.push(entry.name)
+          files.push(name)
         }
       }
 

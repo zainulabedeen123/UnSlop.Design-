@@ -3,9 +3,9 @@
  */
 
 import type { ProductOverview, ProductRoadmap, Problem, Section, ProductData } from '@/types/product'
-import { loadDataModel, hasDataModel } from './data-model-loader'
-import { loadDesignSystem, hasDesignSystem } from './design-system-loader'
-import { loadShellInfo, hasShell } from './shell-loader'
+import { loadDataModel, loadDataModelRuntime, hasDataModel } from './data-model-loader'
+import { loadDesignSystem, loadDesignSystemRuntime, hasDesignSystem } from './design-system-loader'
+import { loadShellInfo, loadShellInfoRuntime, hasShell } from './shell-loader'
 import { runtimeFileLoader } from './runtime-file-loader'
 
 // Load markdown files from /product/ directory at build time

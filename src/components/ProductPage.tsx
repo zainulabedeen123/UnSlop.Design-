@@ -83,7 +83,7 @@ export function ProductPage() {
         {/* Step 1: Product Vision */}
         <div id="step-overview">
           <StepIndicator step={1} status={stepStatuses[0]}>
-            {productData.overview ? (
+            {productData?.overview ? (
               <ProductOverviewCard overview={productData.overview} />
             ) : (
               <EmptyState type="overview" />
@@ -94,7 +94,7 @@ export function ProductPage() {
         {/* Step 2: Roadmap / Sections Definition */}
         <div id="step-roadmap">
           <StepIndicator step={2} status={stepStatuses[1]} isLast={!allStepsComplete}>
-            {productData.roadmap ? (
+            {productData?.roadmap ? (
               <SectionsCard
                 roadmap={productData.roadmap}
                 onSectionClick={(sectionId) => navigate(`/sections/${sectionId}`)}
