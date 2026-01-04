@@ -119,7 +119,9 @@ class FileSystemService {
       })
 
       // Save the handle to IndexedDB for future sessions
-      await this.saveDirectoryHandle(this.directoryHandle)
+      if (this.directoryHandle) {
+        await this.saveDirectoryHandle(this.directoryHandle)
+      }
 
       return true
     } catch (error) {

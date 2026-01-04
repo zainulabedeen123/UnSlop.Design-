@@ -1,5 +1,4 @@
 import { Label } from '@/components/ui/label'
-import { DEFAULT_MODEL } from '@/lib/ai-service'
 
 interface AIModelSelectorProps {
   value: string

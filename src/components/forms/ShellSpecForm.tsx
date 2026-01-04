@@ -150,7 +150,7 @@ Be specific and professional. Base navigation items on the product's sections/fe
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Auto-save status */}
-          <AutoSaveStatus result={saveResult} />
+          <AutoSaveStatus saveResult={saveResult} />
 
           {/* Preview */}
           <div className="bg-stone-50 dark:bg-stone-900 rounded-md p-4 border border-stone-200 dark:border-stone-700">
@@ -259,8 +259,8 @@ Be specific and professional. Base navigation items on the product's sections/fe
                   AI will generate navigation based on your product sections
                 </p>
                 <AIModelSelector
-                  selectedModel={selectedModel}
-                  onModelChange={setSelectedModel}
+                  value={selectedModel}
+                  onChange={setSelectedModel}
                 />
               </>
             )}

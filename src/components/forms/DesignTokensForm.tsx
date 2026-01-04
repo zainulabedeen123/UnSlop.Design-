@@ -433,8 +433,8 @@ Respond with ONLY the JSON object, no explanation.`
                   AI will suggest colors and fonts that match your product's personality
                 </p>
                 <AIModelSelector
-                  selectedModel={selectedModel}
-                  onModelChange={setSelectedModel}
+                  value={selectedModel}
+                  onChange={setSelectedModel}
                 />
               </>
             )}

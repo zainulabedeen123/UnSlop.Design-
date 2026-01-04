@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Boxes, Download, Copy, Check, Sparkles, Loader2, X, Plus } from 'lucide-react'
+import { Boxes, Download, Copy, Check, Sparkles, Loader2 } from 'lucide-react'
 import { aiService, DEFAULT_MODEL } from '@/lib/ai-service'
 import { AIModelSelector } from './AIModelSelector'
 import { AutoSaveStatus } from './AutoSaveStatus'
@@ -389,8 +389,8 @@ Be specific and professional. Infer logical entities and relationships based on 
 
             {useAI && (
               <AIModelSelector
-                selectedModel={selectedModel}
-                onModelChange={setSelectedModel}
+                value={selectedModel}
+                onChange={setSelectedModel}
               />
             )}
           </div>
