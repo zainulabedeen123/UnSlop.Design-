@@ -126,8 +126,12 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           Plan Better Products<br />with AI
         </h1>
         
-        <p className="text-lg sm:text-xl text-stone-600 dark:text-stone-400 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg sm:text-xl text-stone-600 dark:text-stone-400 mb-4 max-w-2xl mx-auto">
           Define your product vision, let AI generate data models and design systems, then export production-ready components. All in one place.
+        </p>
+
+        <p className="text-base font-semibold text-lime-600 dark:text-lime-400 mb-8">
+          100% FREE and Open Source
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
