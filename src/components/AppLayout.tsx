@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Layers, ArrowLeft, FolderPlus } from 'lucide-react'
+import { Layers, ArrowLeft, FolderPlus, Github } from 'lucide-react'
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { PhaseNav } from './PhaseNav'
 import { ThemeToggle } from './ThemeToggle'
 import { Button } from '@/components/ui/button'
@@ -75,7 +76,26 @@ export function AppLayout({
                   </h1>
                 </>
               )}
-              <div className="ml-auto">
+              <div className="ml-auto flex items-center gap-2">
+                {/* Clerk Authentication */}
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-8 h-8"
+                      }
+                    }}
+                  />
+                </SignedIn>
+
+                {/* Theme Toggle */}
                 <ThemeToggle />
               </div>
             </div>
@@ -102,8 +122,49 @@ export function AppLayout({
                 </div>
               )}
 
-              {/* Theme Toggle */}
-              <div className="shrink-0 flex justify-end">
+              {/* Auth, GitHub Link and Theme Toggle */}
+              <div className="shrink-0 flex items-center gap-2">
+                {/* Clerk Authentication */}
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-8 h-8"
+                      }
+                    }}
+                  />
+                </SignedIn>
+
+                {/* GitHub Link */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  className="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+                >
+                  <a
+                    href="https://github.com/zainulabedeen123/UnSlop.Design-"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View on GitHub"
+                  >
+                    <Github className="w-4 h-4" strokeWidth={1.5} />
+                  </a>
+                </Button>
+
+                {/* Theme Toggle */}
                 <ThemeToggle />
               </div>
             </div>

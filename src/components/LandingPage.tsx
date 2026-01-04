@@ -1,4 +1,5 @@
-import { Layers, Sparkles, FolderOpen, Zap, FileText, Boxes, Layout } from 'lucide-react'
+import { Layers, Sparkles, FolderOpen, Zap, FileText, Boxes, Layout, Github } from 'lucide-react'
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ThemeToggle } from './ThemeToggle'
@@ -19,7 +20,33 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             </div>
             <span className="text-lg font-semibold text-stone-900 dark:text-stone-100">Unslop AI</span>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            {/* Clerk Authentication */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button variant="ghost" size="sm">
+                  Sign In
+                </Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button size="sm">
+                  Sign Up
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8"
+                  }
+                }}
+              />
+            </SignedIn>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -46,6 +73,12 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           <Button variant="outline" size="lg" className="text-base" asChild>
             <a href="https://unslop.design/docs" target="_blank" rel="noopener noreferrer">
               View Documentation
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" className="text-base" asChild>
+            <a href="https://github.com/zainulabedeen123/UnSlop.Design-" target="_blank" rel="noopener noreferrer">
+              <Github className="w-5 h-5 mr-2" />
+              GitHub
             </a>
           </Button>
         </div>
