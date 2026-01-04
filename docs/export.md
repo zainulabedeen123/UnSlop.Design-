@@ -14,9 +14,9 @@ You can export at any point—it doesn't have to be "complete." Exporting genera
 
 ## Running the Export
 
-```
-/export-product
-```
+**Using Interactive Form:** Not available - use AI assistant for this step.
+
+**Using AI Assistant:** Ask your AI to help export the product, or use `/export-product` (Claude Code).
 
 The export command:
 

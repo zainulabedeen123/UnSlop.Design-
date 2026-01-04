@@ -1,6 +1,11 @@
 # Usage
 
-Design OS uses slash commands to guide you through the design process. Each command is a conversation—the AI asks questions, you provide direction, and together you shape your product.
+Design OS can be used in **two ways**:
+
+1. **Interactive UI Forms** — Fill out forms in the web app, download generated files, save to `product/` directory
+2. **AI-Assisted Workflow** — Use your preferred AI code editor to help create files through conversation
+
+Both methods produce the same output files and follow the same structured workflow.
 
 ## The Design Workflow
 
@@ -40,6 +45,28 @@ When all sections are designed:
 See [Export](export.md) for details on what's included and how to use it.
 
 ## Quick Reference
+
+### Using Interactive Forms
+
+Navigate through the app and click "Use Interactive Form" when you see an empty state. Available forms:
+
+- **Product Vision Form** → `product/product-overview.md`
+- **Product Roadmap Form** → `product/product-roadmap.md`
+- **Data Model Form** → `product/data-model/data-model.md`
+- **Design Tokens Form** → `product/design-system/colors.json` & `typography.json`
+- More forms available in the UI
+
+### Using AI Assistants
+
+Ask your AI code editor to help create files. Example prompts:
+
+- "Help me create a product overview for [your product]"
+- "I need to define my product roadmap"
+- "Create a data model for my app"
+- "Help me choose design tokens"
+- "Design the application shell"
+
+**Claude Code users** can also use slash commands:
 
 | Command | Purpose |
 |---------|---------|

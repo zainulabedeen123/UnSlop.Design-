@@ -4,9 +4,9 @@ After completing [Product Planning](product-planning.md), you're ready to design
 
 ## 1. Shape the Section
 
-```
-/shape-section
-```
+**Using Interactive Form:** Click "Use Interactive Form" on a section page (when available).
+
+**Using AI Assistant:** Ask your AI to help shape a section, or use `/shape-section` (Claude Code).
 
 Define what the section does. If you have multiple sections, you'll be asked which one to work on.
 
@@ -25,9 +25,9 @@ You'll also be asked whether this section should display inside the application 
 
 ## 2. Create Sample Data
 
-```
-/sample-data
-```
+**Using Interactive Form:** Click "Use Interactive Form" on a section page (when available).
+
+**Using AI Assistant:** Ask your AI to help create sample data, or use `/sample-data` (Claude Code).
 
 Generate realistic sample data based on the spec. This data populates your screen designs and makes them feel real.
 
@@ -53,9 +53,9 @@ The sample data includes:
 
 ## 3. Design the Screen
 
-```
-/design-screen
-```
+**Using Interactive Form:** Not available - use AI assistant for this step.
+
+**Using AI Assistant:** Ask your AI to help design the screen, or use `/design-screen` (Claude Code).
 
 Build the actual React components for the section. This is where the spec and sample data become a working UI.
 
@@ -105,9 +105,9 @@ If the spec implies multiple views (list view, detail view, form, etc.), you'll 
 
 ## 4. Capture Screenshots (Optional)
 
-```
-/screenshot-design
-```
+**Using Interactive Form:** Not available - use AI assistant for this step.
+
+**Using AI Assistant:** Ask your AI to help capture screenshots, or use `/screenshot-design` (Claude Code).
 
 Take screenshots of your screen designs for documentation. Screenshots are saved alongside the spec and data files.
 

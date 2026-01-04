@@ -4,9 +4,9 @@ The first phase of Design OS establishes the foundation for your product. Comple
 
 ## 1. Product Vision
 
-```
-/product-vision
-```
+**Using Interactive Form:** Click "Use Interactive Form" on the Product Overview page.
+
+**Using AI Assistant:** Ask your AI to help create a product overview, or use `/product-vision` (Claude Code).
 
 Define your product's core identity. This is a conversational process where you'll establish:
 
@@ -21,9 +21,9 @@ Share any notes, ideas, or rough thoughts you have about what you're building. T
 
 ## 2. Product Roadmap
 
-```
-/product-roadmap
-```
+**Using Interactive Form:** Click "Use Interactive Form" on the Product Roadmap page.
+
+**Using AI Assistant:** Ask your AI to help create a product roadmap, or use `/product-roadmap` (Claude Code).
 
 Break your product into 3-5 sections. Each section represents:
 
@@ -37,9 +37,9 @@ Based on your product overview, the AI will propose sections and discuss orderin
 
 ## 3. Data Model
 
-```
-/data-model
-```
+**Using Interactive Form:** Click "Use Interactive Form" on the Data Model page.
+
+**Using AI Assistant:** Ask your AI to help create a data model, or use `/data-model` (Claude Code).
 
 Define the core entities in your product—the "nouns" of your system. What are the main things users create, view, and manage?
 
@@ -55,9 +55,9 @@ Don't worry about database schemas or field types. Keep it minimal. The implemen
 
 ## 4. Design Tokens
 
-```
-/design-tokens
-```
+**Using Interactive Form:** Click "Use Interactive Form" on the Design Tokens page.
+
+**Using AI Assistant:** Ask your AI to help choose design tokens, or use `/design-tokens` (Claude Code).
 
 Choose your visual identity:
 
@@ -83,9 +83,9 @@ The AI will suggest options based on your product type and help you find a combi
 
 ## 5. Application Shell
 
-```
-/design-shell
-```
+**Using Interactive Form:** Click "Use Interactive Form" on the Application Shell page (when available).
+
+**Using AI Assistant:** Ask your AI to help design the shell, or use `/design-shell` (Claude Code).
 
 Design the persistent navigation and layout that wraps all your sections. Choose from common patterns:
 

@@ -31,15 +31,46 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Open Claude Code
+## Choose Your Workflow
 
-In the same project directory, start Claude Code:
+Design OS works in **two ways**:
 
+### Option 1: Interactive UI Forms (Recommended)
+
+Use the forms directly in the web application:
+
+1. Navigate through the app using the phase navigation
+2. Click "Use Interactive Form" when you see an empty state
+3. Fill out the form with your product details
+4. Download or copy the generated file
+5. Save it to the specified location in the `product/` directory
+6. Refresh the app to see your changes
+
+**Best for**: Visual learners, those who prefer step-by-step guidance, or anyone new to Design OS.
+
+### Option 2: AI-Assisted Workflow
+
+Use your preferred AI code editor to help create files:
+
+**With Claude Code:**
 ```bash
 claude
 ```
+Then run commands like `/product-vision`, `/product-roadmap`, etc.
 
-You're ready to start designing. Run `/product-vision` to begin defining your product.
+**With Cursor AI, Augment Code, Windsurf, or Cline:**
+Open your AI assistant and ask it to help you create the necessary files. For example:
+- "Help me create a product overview for Design OS"
+- "I need to define my product roadmap"
+- "Create a data model for my app"
+
+The AI will ask clarifying questions and generate the properly formatted files.
+
+**Best for**: Those comfortable with AI assistants, developers who prefer conversational workflows, or users who want AI to help with design decisions.
+
+## You're Ready!
+
+Start with the Product Overview page and work your way through the planning flow. The app will guide you through each step.
 
 ---
 

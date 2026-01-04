@@ -1,0 +1,98 @@
+# Cursor AI Rules for Design OS
+
+## Primary Instructions
+Read and follow the comprehensive instructions in `AI_INSTRUCTIONS.md`.
+
+## Quick Reference
+
+### What is Design OS?
+Design OS is a product planning and design tool that helps you define your product vision, structure your data model, design your UI, and prepare export packages for implementation.
+
+### Two Ways to Use Design OS
+
+1. **Interactive UI Forms** (Recommended)
+   - Use the forms in the web application
+   - Fill out forms → Download/copy generated files → Save to `product/` directory
+   - Refresh the app to see changes
+
+2. **AI-Assisted File Creation**
+   - Ask me to help create the necessary files
+   - I'll ask clarifying questions and generate properly formatted content
+   - I can save files directly or provide content for you to save manually
+
+### The Planning Flow
+
+1. **Product Overview** → `product/product-overview.md`
+2. **Product Roadmap** → `product/product-roadmap.md`
+3. **Data Model** → `product/data-model/data-model.md`
+4. **Design Tokens** → `product/design-system/colors.json` & `typography.json`
+5. **Application Shell** → `product/shell/spec.md` & `src/shell/components/`
+6. **Sections** → For each section: spec, data, screen designs, screenshots
+7. **Export** → `product-plan/` (complete handoff package)
+
+### File Structure
+
+```
+product/
+├── product-overview.md
+├── product-roadmap.md
+├── data-model/
+│   └── data-model.md
+├── design-system/
+│   ├── colors.json
+│   └── typography.json
+├── shell/
+│   └── spec.md
+└── sections/
+    └── [section-id]/
+        ├── spec.md
+        ├── data.json
+        ├── types.ts
+        └── *.png
+```
+
+### Design Requirements
+
+- **Tailwind CSS v4** (no tailwind.config.js)
+- **Mobile responsive** (use `sm:`, `md:`, `lg:`, `xl:` prefixes)
+- **Light & Dark mode** (use `dark:` variants)
+- **Props-based components** (accept data via props, not imports)
+- **Stone palette** for neutrals, **Lime** for accents (Design OS UI)
+- **Product design tokens** when available (for screen designs)
+
+### Common Commands
+
+When the user asks to:
+- "Create product overview" → Help create `product/product-overview.md`
+- "Define roadmap" → Help create `product/product-roadmap.md`
+- "Create data model" → Help create `product/data-model/data-model.md`
+- "Choose design tokens" → Help create design system files
+- "Design a section" → Help create section spec, data, and components
+
+### Best Practices
+
+1. **Ask clarifying questions** before generating files
+2. **Follow the exact markdown format** shown in `AI_INSTRUCTIONS.md`
+3. **Keep data models minimal** - high-level concepts only
+4. **Suggest using interactive forms** when available
+5. **Validate file locations** before saving
+6. **Guide users through the sequence** - don't skip steps
+
+### Cursor-Specific Features
+
+- Use Cursor's file creation capabilities to save files directly
+- Use Cursor's multi-file editing to update related files
+- Use Cursor's terminal integration to run dev server (`npm run dev`)
+- Use Cursor's search to find existing product files
+
+### Getting Help
+
+For detailed instructions on any step, refer to:
+- `AI_INSTRUCTIONS.md` - Complete AI assistant guidelines
+- `docs/` directory - User-facing documentation
+- `.claude/commands/design-os/` - Original command templates (for reference)
+
+---
+
+**Remember**: Design OS is a planning tool. The components created here are meant to be exported and integrated into a separate product codebase.
+

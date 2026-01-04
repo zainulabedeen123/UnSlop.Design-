@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loadProductData } from '@/lib/product-loader'
 import { AppLayout } from '@/components/AppLayout'
@@ -7,6 +7,8 @@ import { ProductOverviewCard } from '@/components/ProductOverviewCard'
 import { SectionsCard } from '@/components/SectionsCard'
 import { StepIndicator, type StepStatus } from '@/components/StepIndicator'
 import { NextPhaseButton } from '@/components/NextPhaseButton'
+import { LandingPage } from '@/components/LandingPage'
+import { fileSystemService } from '@/lib/file-system-service'
 
 /**
  * Determine the status of each step on the Product page
@@ -40,12 +42,30 @@ function getProductPageStepStatuses(
 export function ProductPage() {
   const navigate = useNavigate()
   const productData = useMemo(() => loadProductData(), [])
+  const [hasDirectoryAccess, setHasDirectoryAccess] = useState(fileSystemService.hasDirectoryAccess())
 
   const hasOverview = !!productData.overview
   const hasRoadmap = !!productData.roadmap
   const allStepsComplete = hasOverview && hasRoadmap
 
   const stepStatuses = getProductPageStepStatuses(hasOverview, hasRoadmap)
+
+  // Check directory access on mount
+  useEffect(() => {
+    setHasDirectoryAccess(fileSystemService.hasDirectoryAccess())
+  }, [])
+
+  const handleGetStarted = async () => {
+    const success = await fileSystemService.requestDirectoryAccess()
+    if (success) {
+      setHasDirectoryAccess(true)
+    }
+  }
+
+  // Show landing page if no directory access
+  if (!hasDirectoryAccess) {
+    return <LandingPage onGetStarted={handleGetStarted} />
+  }
 
   return (
     <AppLayout>
