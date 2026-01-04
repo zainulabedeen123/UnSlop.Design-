@@ -1,6 +1,6 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { loadProductData } from '@/lib/product-loader'
+import { useProductData } from '@/hooks/useProductData'
 import { AppLayout } from '@/components/AppLayout'
 import { EmptyState } from '@/components/EmptyState'
 import { ProductOverviewCard } from '@/components/ProductOverviewCard'
@@ -41,11 +41,11 @@ function getProductPageStepStatuses(
 
 export function ProductPage() {
   const navigate = useNavigate()
-  const productData = useMemo(() => loadProductData(), [])
+  const productData = useProductData()
   const [hasDirectoryAccess, setHasDirectoryAccess] = useState(fileSystemService.hasDirectoryAccess())
 
-  const hasOverview = !!productData.overview
-  const hasRoadmap = !!productData.roadmap
+  const hasOverview = !!productData?.overview
+  const hasRoadmap = !!productData?.roadmap
   const allStepsComplete = hasOverview && hasRoadmap
 
   const stepStatuses = getProductPageStepStatuses(hasOverview, hasRoadmap)

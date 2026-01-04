@@ -1,14 +1,13 @@
-import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AppLayout } from '@/components/AppLayout'
 import { EmptyState } from '@/components/EmptyState'
 import { StepIndicator, type StepStatus } from '@/components/StepIndicator'
 import { NextPhaseButton } from '@/components/NextPhaseButton'
-import { loadProductData } from '@/lib/product-loader'
+import { useProductData } from '@/hooks/useProductData'
 
 export function DataModelPage() {
-  const productData = useMemo(() => loadProductData(), [])
-  const dataModel = productData.dataModel
+  const productData = useProductData()
+  const dataModel = productData?.dataModel
 
   const hasDataModel = !!dataModel
   const stepStatus: StepStatus = hasDataModel ? 'completed' : 'current'

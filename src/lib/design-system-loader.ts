@@ -3,6 +3,7 @@
  */
 
 import type { DesignSystem, ColorTokens, TypographyTokens } from '@/types/product'
+import { runtimeFileLoader } from './runtime-file-loader'
 
 // Load JSON files from product/design-system at build time
 const designSystemFiles = import.meta.glob('/product/design-system/*.json', {
@@ -62,7 +63,7 @@ export function loadTypographyTokens(): TypographyTokens | null {
 }
 
 /**
- * Load the complete design system
+ * Load the complete design system (build-time)
  */
 export function loadDesignSystem(): DesignSystem | null {
   const colors = loadColorTokens()
@@ -74,6 +75,27 @@ export function loadDesignSystem(): DesignSystem | null {
   }
 
   return { colors, typography }
+}
+
+/**
+ * Load the complete design system from runtime files
+ */
+export async function loadDesignSystemRuntime(): Promise<DesignSystem | null> {
+  const colorsContent = await runtimeFileLoader.readJsonFile<Record<string, string>>('product/design-system/colors.json')
+  const typographyContent = await runtimeFileLoader.readJsonFile<Record<string, string>>('product/design-system/typography.json')
+
+  const colors = colorsContent ? parseColorTokens(colorsContent) : null
+  const typography = typographyContent ? parseTypographyTokens(typographyContent) : null
+
+  // Fall back to build-time files if runtime files don't exist
+  const colorsFinal = colors || loadColorTokens()
+  const typographyFinal = typography || loadTypographyTokens()
+
+  if (!colorsFinal && !typographyFinal) {
+    return null
+  }
+
+  return { colors: colorsFinal, typography: typographyFinal }
 }
 
 /**

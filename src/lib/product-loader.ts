@@ -6,6 +6,7 @@ import type { ProductOverview, ProductRoadmap, Problem, Section, ProductData } f
 import { loadDataModel, hasDataModel } from './data-model-loader'
 import { loadDesignSystem, hasDesignSystem } from './design-system-loader'
 import { loadShellInfo, hasShell } from './shell-loader'
+import { runtimeFileLoader } from './runtime-file-loader'
 
 // Load markdown files from /product/ directory at build time
 const productFiles = import.meta.glob('/product/*.md', {
@@ -153,6 +154,7 @@ export function parseProductRoadmap(md: string): ProductRoadmap | null {
 
 /**
  * Load all product data from markdown files and other sources
+ * This is the synchronous version that only loads build-time files
  */
 export function loadProductData(): ProductData {
   const overviewContent = productFiles['/product/product-overview.md']
@@ -164,6 +166,28 @@ export function loadProductData(): ProductData {
     dataModel: loadDataModel(),
     designSystem: loadDesignSystem(),
     shell: loadShellInfo(),
+  }
+}
+
+/**
+ * Load all product data from runtime files (user's selected directory)
+ * This is the async version that reads files at runtime
+ */
+export async function loadProductDataRuntime(): Promise<ProductData> {
+  // Try to load from runtime files first
+  const overviewContent = await runtimeFileLoader.readFile('product/product-overview.md')
+  const roadmapContent = await runtimeFileLoader.readFile('product/product-roadmap.md')
+
+  // Fall back to build-time files if runtime files don't exist
+  const overviewFinal = overviewContent || productFiles['/product/product-overview.md']
+  const roadmapFinal = roadmapContent || productFiles['/product/product-roadmap.md']
+
+  return {
+    overview: overviewFinal ? parseProductOverview(overviewFinal) : null,
+    roadmap: roadmapFinal ? parseProductRoadmap(roadmapFinal) : null,
+    dataModel: await loadDataModelRuntime(),
+    designSystem: await loadDesignSystemRuntime(),
+    shell: await loadShellInfoRuntime(),
   }
 }
 

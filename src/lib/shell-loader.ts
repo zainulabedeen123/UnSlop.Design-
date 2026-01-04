@@ -4,6 +4,7 @@
 
 import type { ShellSpec, ShellInfo } from '@/types/product'
 import type { ComponentType, ReactNode } from 'react'
+import { runtimeFileLoader } from './runtime-file-loader'
 
 // Load shell spec markdown file at build time
 const shellSpecFiles = import.meta.glob('/product/shell/*.md', {
@@ -131,7 +132,7 @@ export function loadShellPreview(): (() => Promise<{ default: ComponentType }>) 
 }
 
 /**
- * Load the complete shell info
+ * Load the complete shell info (build-time)
  */
 export function loadShellInfo(): ShellInfo | null {
   const specContent = shellSpecFiles['/product/shell/spec.md']
@@ -144,6 +145,24 @@ export function loadShellInfo(): ShellInfo | null {
   }
 
   return { spec, hasComponents }
+}
+
+/**
+ * Load shell info from runtime files
+ */
+export async function loadShellInfoRuntime(): Promise<ShellInfo | null> {
+  const content = await runtimeFileLoader.readFile('product/shell/spec.md')
+  const spec = content ? parseShellSpec(content) : null
+  const hasComponents = hasShellComponents()
+
+  // Fall back to build-time files if runtime files don't exist
+  const specFinal = spec || (shellSpecFiles['/product/shell/spec.md'] ? parseShellSpec(shellSpecFiles['/product/shell/spec.md']) : null)
+
+  if (!specFinal && !hasComponents) {
+    return null
+  }
+
+  return { spec: specFinal, hasComponents }
 }
 
 /**

@@ -1,11 +1,10 @@
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AppLayout } from '@/components/AppLayout'
 import { EmptyState } from '@/components/EmptyState'
 import { StepIndicator, type StepStatus } from '@/components/StepIndicator'
 import { NextPhaseButton } from '@/components/NextPhaseButton'
-import { loadProductData } from '@/lib/product-loader'
+import { useProductData } from '@/hooks/useProductData'
 import { ChevronRight, Layout } from 'lucide-react'
 
 // Map Tailwind color names to actual color values for preview
@@ -64,9 +63,9 @@ function getDesignPageStepStatuses(
 }
 
 export function DesignPage() {
-  const productData = useMemo(() => loadProductData(), [])
-  const designSystem = productData.designSystem
-  const shell = productData.shell
+  const productData = useProductData()
+  const designSystem = productData?.designSystem
+  const shell = productData?.shell
 
   const hasDesignSystem = !!(designSystem?.colors || designSystem?.typography)
   const hasShell = !!shell?.spec

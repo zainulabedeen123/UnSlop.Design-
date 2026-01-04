@@ -3,6 +3,7 @@
  */
 
 import type { DataModel, Entity } from '@/types/product'
+import { runtimeFileLoader } from './runtime-file-loader'
 
 // Load data model markdown file at build time
 const dataModelFiles = import.meta.glob('/product/data-model/*.md', {
@@ -76,11 +77,23 @@ export function parseDataModel(md: string): DataModel | null {
 }
 
 /**
- * Load the data model from markdown file
+ * Load the data model from markdown file (build-time)
  */
 export function loadDataModel(): DataModel | null {
   const content = dataModelFiles['/product/data-model/data-model.md']
   return content ? parseDataModel(content) : null
+}
+
+/**
+ * Load the data model from runtime files
+ */
+export async function loadDataModelRuntime(): Promise<DataModel | null> {
+  const content = await runtimeFileLoader.readFile('product/data-model/data-model.md')
+  if (content) {
+    return parseDataModel(content)
+  }
+  // Fall back to build-time files
+  return loadDataModel()
 }
 
 /**

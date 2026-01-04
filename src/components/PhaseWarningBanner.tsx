@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { AlertTriangle, X } from 'lucide-react'
-import { loadProductData } from '@/lib/product-loader'
+import { useProductData } from '@/hooks/useProductData'
+import { useProjectState } from '@/hooks/useProjectState'
 
 /**
  * Get a storage key based on the product name to track dismissed warnings per product
@@ -16,15 +17,17 @@ function getStorageKey(productName: string): string {
 }
 
 export function PhaseWarningBanner() {
-  const productData = useMemo(() => loadProductData(), [])
+  const productData = useProductData()
+  const projectState = useProjectState()
   const [isDismissed, setIsDismissed] = useState(true) // Start dismissed to avoid flash
 
-  const hasDataModel = !!productData.dataModel
-  const hasDesignSystem = !!(productData.designSystem?.colors || productData.designSystem?.typography)
-  const hasShell = !!productData.shell?.spec
+  // Use project state for accurate completion checks
+  const hasDataModel = projectState.hasDataModel
+  const hasDesignSystem = projectState.hasDesignSystem
+  const hasShell = projectState.hasShell
   const hasDesign = hasDesignSystem || hasShell
 
-  const productName = productData.overview?.name || 'default-product'
+  const productName = productData?.overview?.name || projectState.projectName || 'default-product'
   const storageKey = getStorageKey(productName)
 
   // Check localStorage on mount

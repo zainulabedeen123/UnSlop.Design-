@@ -140,6 +140,13 @@ class FileSystemService {
   }
 
   /**
+   * Get the directory handle (for reading files)
+   */
+  async getDirectoryHandle(): Promise<FileSystemDirectoryHandle | null> {
+    return this.directoryHandle
+  }
+
+  /**
    * Save a file to the project directory
    */
   async saveFile({ path, content, type = 'text/markdown' }: SaveFileOptions): Promise<SaveResult> {
