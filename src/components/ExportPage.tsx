@@ -5,26 +5,30 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { AppLayout } from '@/components/AppLayout'
 import { loadProductData, hasExportZip, getExportZipUrl } from '@/lib/product-loader'
 import { getAllSectionIds, getSectionScreenDesigns } from '@/lib/section-loader'
+import { projectStateService } from '@/lib/project-state-service'
+import { useProjectState } from '@/hooks/useProjectState'
 
 export function ExportPage() {
   const productData = useMemo(() => loadProductData(), [])
+  const projectState = useProjectState()
 
-  // Get section stats
+  // Get section stats from project state
   const sectionStats = useMemo(() => {
-    const allSectionIds = getAllSectionIds()
-    const sectionCount = productData.roadmap?.sections.length || 0
-    const sectionsWithScreenDesigns = allSectionIds.filter(id => {
-      const screenDesigns = getSectionScreenDesigns(id)
-      return screenDesigns.length > 0
-    }).length
-    return { sectionCount, sectionsWithScreenDesigns, allSectionIds }
-  }, [productData.roadmap])
+    const sectionsWithScreenDesigns = projectStateService.getSectionsWithScreenDesigns()
+    const sectionCount = Object.keys(projectState.sections).length
+    return {
+      sectionCount,
+      sectionsWithScreenDesigns: sectionsWithScreenDesigns.length,
+      allSectionIds: sectionsWithScreenDesigns
+    }
+  }, [projectState])
 
-  const hasOverview = !!productData.overview
-  const hasRoadmap = !!productData.roadmap
-  const hasDataModel = !!productData.dataModel
-  const hasDesignSystem = !!productData.designSystem
-  const hasShell = !!productData.shell
+  // Use project state for completion checks
+  const hasOverview = projectState.hasProductOverview
+  const hasRoadmap = projectState.hasProductRoadmap
+  const hasDataModel = projectState.hasDataModel
+  const hasDesignSystem = projectState.hasDesignSystem
+  const hasShell = projectState.hasShell
   const hasSections = sectionStats.sectionsWithScreenDesigns > 0
 
   const requiredComplete = hasOverview && hasRoadmap && hasSections

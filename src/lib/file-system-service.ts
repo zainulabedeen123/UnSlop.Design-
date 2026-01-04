@@ -3,6 +3,8 @@
  * Handles automatic saving of generated files to the project directory
  */
 
+import { projectStateService } from './project-state-service'
+
 export interface SaveFileOptions {
   path: string // Relative path from project root, e.g., 'product/product-overview.md'
   content: string
@@ -164,6 +166,9 @@ class FileSystemService {
       await writable.write(content)
       await writable.close()
 
+      // Update project state based on file path
+      await this.updateProjectState(path, content)
+
       return {
         success: true,
         message: `File saved successfully to ${path}`,
@@ -171,9 +176,78 @@ class FileSystemService {
       }
     } catch (error) {
       console.error('Failed to save file:', error)
-      
+
       // Fall back to download
       return this.downloadFile({ path, content, type })
+    }
+  }
+
+  /**
+   * Update project state based on saved file
+   */
+  private async updateProjectState(path: string, content: string): Promise<void> {
+    try {
+      // Product overview
+      if (path === 'product/product-overview.md') {
+        // Extract product name from markdown
+        const nameMatch = content.match(/^#\s+(.+)$/m)
+        const productName = nameMatch?.[1]?.trim()
+        await projectStateService.markProductOverviewComplete(productName)
+      }
+
+      // Product roadmap
+      else if (path === 'product/product-roadmap.md') {
+        await projectStateService.markProductRoadmapComplete()
+      }
+
+      // Data model
+      else if (path === 'product/data-model/data-model.md') {
+        await projectStateService.markDataModelComplete()
+      }
+
+      // Design system - colors
+      else if (path === 'product/design-system/colors.json') {
+        await projectStateService.markColorsComplete()
+      }
+
+      // Design system - typography
+      else if (path === 'product/design-system/typography.json') {
+        await projectStateService.markTypographyComplete()
+      }
+
+      // Shell
+      else if (path === 'product/shell/spec.md') {
+        await projectStateService.markShellComplete()
+      }
+
+      // Section files
+      else if (path.startsWith('product/sections/')) {
+        const match = path.match(/^product\/sections\/([^/]+)\/(.+)$/)
+        if (match) {
+          const [, sectionId, fileName] = match
+
+          if (fileName === 'spec.md') {
+            await projectStateService.markSectionSpecComplete(sectionId)
+          } else if (fileName === 'data.json') {
+            await projectStateService.markSectionDataComplete(sectionId)
+          } else if (fileName === 'types.ts') {
+            await projectStateService.markSectionTypesComplete(sectionId)
+          } else if (fileName.endsWith('.png')) {
+            await projectStateService.addSectionScreenshot(sectionId)
+          }
+        }
+      }
+
+      // Screen designs (src/sections)
+      else if (path.startsWith('src/sections/')) {
+        const match = path.match(/^src\/sections\/([^/]+)\//)
+        if (match) {
+          const [, sectionId] = match
+          await projectStateService.addSectionScreenDesign(sectionId)
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to update project state:', error)
     }
   }
 
@@ -230,6 +304,9 @@ class FileSystemService {
       const transaction = db.transaction(['handles'], 'readwrite')
       const store = transaction.objectStore('handles')
       store.delete(this.STORAGE_KEY)
+
+      // Also clear project state
+      await projectStateService.clearState()
     } catch (error) {
       console.warn('Failed to clear directory handle:', error)
     }
