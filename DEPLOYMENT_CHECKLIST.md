@@ -7,6 +7,16 @@
 - [x] No linting errors
 - [x] All imports resolved
 - [x] No console errors in dev mode
+- [x] All unused imports removed
+- [x] Proper null checks added
+
+### Sample Data Cleanup
+- [x] `product/product-overview.md` deleted (CanvasAI sample)
+- [x] `product/data-model/data-model.md` deleted (CanvasAI sample)
+- [x] `product/design-system/colors.json` deleted (sample colors)
+- [x] `product/design-system/typography.json` deleted (sample fonts)
+- [x] `product/shell/spec.md` deleted (CanvasAI sample)
+- [x] Users now start with completely empty forms
 
 ### Dependencies
 - [x] `openai` package added to package.json
