@@ -1,17 +1,69 @@
+import { useState, useEffect, useRef } from 'react'
 import { Layers, Sparkles, FolderOpen, Zap, FileText, Boxes, Layout, Github } from 'lucide-react'
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/clerk-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ThemeToggle } from './ThemeToggle'
 import { SettingsDialog } from './SettingsDialog'
+import { ApiKeyOnboardingDialog } from './ApiKeyOnboardingDialog'
+import { userApiKeyService } from '@/lib/user-api-key-service'
 
 interface LandingPageProps {
   onGetStarted: () => void
 }
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
+  const { isSignedIn } = useUser()
+  const [showApiKeyOnboarding, setShowApiKeyOnboarding] = useState(false)
+  const [pendingFolderAccess, setPendingFolderAccess] = useState(false)
+  const signInButtonRef = useRef<HTMLButtonElement>(null)
+
   // Check if Clerk is enabled
   const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
+
+  // Watch for sign-in completion
+  useEffect(() => {
+    if (isSignedIn && pendingFolderAccess) {
+      // User just signed in and wants to get started
+      // Check if they have an API key
+      if (!userApiKeyService.hasApiKey()) {
+        // Show API key onboarding
+        setShowApiKeyOnboarding(true)
+      } else {
+        // They have an API key, proceed to folder selection
+        setPendingFolderAccess(false)
+        onGetStarted()
+      }
+    }
+  }, [isSignedIn, pendingFolderAccess, onGetStarted])
+
+  const handleGetStartedClick = () => {
+    // Step 1: Check if user is signed in
+    if (!isSignedIn) {
+      // User needs to sign in first
+      setPendingFolderAccess(true)
+      // Trigger Clerk sign-in modal
+      signInButtonRef.current?.click()
+      return
+    }
+
+    // Step 2: Check if user has API key
+    if (!userApiKeyService.hasApiKey()) {
+      // Show API key onboarding dialog
+      setPendingFolderAccess(true)
+      setShowApiKeyOnboarding(true)
+      return
+    }
+
+    // Step 3: All good, proceed to folder selection
+    onGetStarted()
+  }
+
+  const handleApiKeyOnboardingComplete = () => {
+    // API key has been saved, proceed to folder selection
+    setPendingFolderAccess(false)
+    onGetStarted()
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,7 +131,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onClick={onGetStarted} size="lg" className="text-base">
+          <Button onClick={handleGetStartedClick} size="lg" className="text-base">
             <FolderOpen className="w-5 h-5 mr-2" />
             Get Started
           </Button>
@@ -266,6 +318,22 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
         </div>
       </footer>
+
+      {/* Hidden Sign In Button for programmatic triggering */}
+      {isClerkEnabled && (
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button ref={signInButtonRef} className="hidden" aria-hidden="true" />
+          </SignInButton>
+        </SignedOut>
+      )}
+
+      {/* API Key Onboarding Dialog */}
+      <ApiKeyOnboardingDialog
+        open={showApiKeyOnboarding}
+        onOpenChange={setShowApiKeyOnboarding}
+        onComplete={handleApiKeyOnboardingComplete}
+      />
     </div>
   )
 }
