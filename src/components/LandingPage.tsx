@@ -3,6 +3,7 @@ import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@cl
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ThemeToggle } from './ThemeToggle'
+import { SettingsDialog } from './SettingsDialog'
 
 interface LandingPageProps {
   onGetStarted: () => void
@@ -40,6 +41,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
+                  <SettingsDialog />
                   <UserButton
                     appearance={{
                       elements: {

@@ -1,4 +1,5 @@
 import OpenAI from 'openai'
+import { userApiKeyService } from './user-api-key-service'
 
 const DEFAULT_MODEL = 'google/gemini-3-flash-preview'
 
@@ -19,23 +20,61 @@ class AIService {
   private apiKey: string | null = null
 
   constructor() {
-    this.apiKey = import.meta.env.VITE_OPENROUTER_API_KEY
+    this.initializeClient()
+  }
+
+  /**
+   * Initialize or reinitialize the OpenAI client with the current API key
+   * Checks user's API key first, then falls back to environment variable
+   */
+  private initializeClient(): void {
+    // Priority 1: User's API key from localStorage
+    const userApiKey = userApiKeyService.getApiKey()
+
+    // Priority 2: Default API key from environment
+    const defaultApiKey = import.meta.env.VITE_OPENROUTER_API_KEY
+
+    this.apiKey = userApiKey || defaultApiKey || null
+
     if (this.apiKey) {
       this.client = new OpenAI({
         baseURL: 'https://openrouter.ai/api/v1',
         apiKey: this.apiKey,
         dangerouslyAllowBrowser: true, // Required for browser usage
       })
+    } else {
+      this.client = null
     }
   }
 
+  /**
+   * Check if AI service is configured with an API key
+   */
   isConfigured(): boolean {
+    // Reinitialize to check for updated user API key
+    this.initializeClient()
     return !!this.apiKey && !!this.client
   }
 
+  /**
+   * Get the current API key source (user or default)
+   */
+  getApiKeySource(): 'user' | 'default' | 'none' {
+    const userApiKey = userApiKeyService.getApiKey()
+    if (userApiKey) return 'user'
+
+    const defaultApiKey = import.meta.env.VITE_OPENROUTER_API_KEY
+    if (defaultApiKey) return 'default'
+
+    return 'none'
+  }
+
   async generate({ prompt, model = DEFAULT_MODEL, systemPrompt }: AIGenerateOptions): Promise<string> {
+    // Reinitialize to get latest API key
+    this.initializeClient()
+
     if (!this.client) {
-      throw new Error('OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your .env file.')
+      throw new Error('OpenRouter API key not configured. Please add your API key in Settings or configure VITE_OPENROUTER_API_KEY in your .env file.')
     }
 
     const messages: Array<{ role: 'system' | 'user'; content: string }> = []
@@ -61,8 +100,11 @@ class AIService {
   }
 
   async *stream({ prompt, model = DEFAULT_MODEL, systemPrompt }: AIStreamOptions): AsyncGenerator<string> {
+    // Reinitialize to get latest API key
+    this.initializeClient()
+
     if (!this.client) {
-      throw new Error('OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your .env file.')
+      throw new Error('OpenRouter API key not configured. Please add your API key in Settings or configure VITE_OPENROUTER_API_KEY in your .env file.')
     }
 
     const messages: Array<{ role: 'system' | 'user'; content: string }> = []

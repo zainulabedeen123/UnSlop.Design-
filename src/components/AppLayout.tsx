@@ -5,6 +5,7 @@ import { Layers, ArrowLeft, FolderPlus, Github } from 'lucide-react'
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { PhaseNav } from './PhaseNav'
 import { ThemeToggle } from './ThemeToggle'
+import { SettingsDialog } from './SettingsDialog'
 import { Button } from '@/components/ui/button'
 import { fileSystemService } from '@/lib/file-system-service'
 import {
@@ -91,6 +92,7 @@ export function AppLayout({
                       </SignInButton>
                     </SignedOut>
                     <SignedIn>
+                      <SettingsDialog />
                       <UserButton
                         appearance={{
                           elements: {
@@ -151,6 +153,7 @@ export function AppLayout({
                       </SignUpButton>
                     </SignedOut>
                     <SignedIn>
+                      <SettingsDialog />
                       <UserButton
                         appearance={{
                           elements: {
