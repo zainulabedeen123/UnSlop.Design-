@@ -43,6 +43,9 @@ export function AppLayout({
   // Determine if this is a sub-page (has back navigation)
   const isSubPage = !!backTo
 
+  // Check if Clerk is enabled
+  const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
+
   const handleNewProject = async () => {
     // Clear the current directory access
     await fileSystemService.clearAccess()
@@ -78,22 +81,26 @@ export function AppLayout({
               )}
               <div className="ml-auto flex items-center gap-2">
                 {/* Clerk Authentication */}
-                <SignedOut>
-                  <SignInButton mode="modal">
-                    <Button variant="ghost" size="sm">
-                      Sign In
-                    </Button>
-                  </SignInButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-8 h-8"
-                      }
-                    }}
-                  />
-                </SignedIn>
+                {isClerkEnabled && (
+                  <>
+                    <SignedOut>
+                      <SignInButton mode="modal">
+                        <Button variant="ghost" size="sm">
+                          Sign In
+                        </Button>
+                      </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                      <UserButton
+                        appearance={{
+                          elements: {
+                            avatarBox: "w-8 h-8"
+                          }
+                        }}
+                      />
+                    </SignedIn>
+                  </>
+                )}
 
                 {/* Theme Toggle */}
                 <ThemeToggle />
@@ -125,27 +132,31 @@ export function AppLayout({
               {/* Auth, GitHub Link and Theme Toggle */}
               <div className="shrink-0 flex items-center gap-2">
                 {/* Clerk Authentication */}
-                <SignedOut>
-                  <SignInButton mode="modal">
-                    <Button variant="ghost" size="sm">
-                      Sign In
-                    </Button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <Button size="sm">
-                      Sign Up
-                    </Button>
-                  </SignUpButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-8 h-8"
-                      }
-                    }}
-                  />
-                </SignedIn>
+                {isClerkEnabled && (
+                  <>
+                    <SignedOut>
+                      <SignInButton mode="modal">
+                        <Button variant="ghost" size="sm">
+                          Sign In
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton mode="modal">
+                        <Button size="sm">
+                          Sign Up
+                        </Button>
+                      </SignUpButton>
+                    </SignedOut>
+                    <SignedIn>
+                      <UserButton
+                        appearance={{
+                          elements: {
+                            avatarBox: "w-8 h-8"
+                          }
+                        }}
+                      />
+                    </SignedIn>
+                  </>
+                )}
 
                 {/* GitHub Link */}
                 <Button

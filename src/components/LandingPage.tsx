@@ -9,6 +9,9 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
+  // Check if Clerk is enabled
+  const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -22,27 +25,31 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
           <div className="flex items-center gap-2">
             {/* Clerk Authentication */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <Button variant="ghost" size="sm">
-                  Sign In
-                </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <Button size="sm">
-                  Sign Up
-                </Button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "w-8 h-8"
-                  }
-                }}
-              />
-            </SignedIn>
+            {isClerkEnabled && (
+              <>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-8 h-8"
+                      }
+                    }}
+                  />
+                </SignedIn>
+              </>
+            )}
 
             {/* Theme Toggle */}
             <ThemeToggle />

@@ -77,7 +77,35 @@ const AppContent = PUBLISHABLE_KEY ? (
 - ✅ Authentication enabled when key is provided
 - ✅ No errors if key is missing
 
-### 3. **Authentication UI Components**
+### 3. **Conditional Clerk Components**
+
+All Clerk components are conditionally rendered based on whether a Clerk key is provided:
+
+```typescript
+// Check if Clerk is enabled
+const isClerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
+
+// Only render Clerk components if enabled
+{isClerkEnabled && (
+  <>
+    <SignedOut>
+      <SignInButton mode="modal">
+        <Button>Sign In</Button>
+      </SignInButton>
+    </SignedOut>
+    <SignedIn>
+      <UserButton />
+    </SignedIn>
+  </>
+)}
+```
+
+**Why this is important:**
+- ✅ Prevents "ClerkProvider not found" errors
+- ✅ Clerk components only render when ClerkProvider is present
+- ✅ Graceful degradation when no Clerk key is provided
+
+### 4. **Authentication UI Components**
 
 Added Clerk components to all headers:
 
@@ -92,7 +120,7 @@ Added Clerk components to all headers:
 - ✅ `AppLayout.tsx` - Main app header (both main and sub-page headers)
 - ✅ `LandingPage.tsx` - Landing page header
 
-### 4. **Modal Mode**
+### 5. **Modal Mode**
 
 All sign-in/sign-up buttons use `mode="modal"` for a better UX:
 
