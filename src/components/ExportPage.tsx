@@ -3,13 +3,11 @@ import { Check, AlertTriangle, FileText, FolderTree, ChevronDown, Download, Pack
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { AppLayout } from '@/components/AppLayout'
-import { loadProductData, hasExportZip, getExportZipUrl } from '@/lib/product-loader'
-import { getAllSectionIds, getSectionScreenDesigns } from '@/lib/section-loader'
+import { hasExportZip, getExportZipUrl } from '@/lib/product-loader'
 import { projectStateService } from '@/lib/project-state-service'
 import { useProjectState } from '@/hooks/useProjectState'
 
 export function ExportPage() {
-  const productData = useMemo(() => loadProductData(), [])
   const projectState = useProjectState()
 
   // Get section stats from project state
