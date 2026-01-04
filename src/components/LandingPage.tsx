@@ -25,7 +25,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
           <div className="flex items-center gap-2">
             {/* Clerk Authentication */}
-            {isClerkEnabled && (
+            {isClerkEnabled ? (
               <>
                 <SignedOut>
                   <SignInButton mode="modal">
@@ -49,6 +49,10 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                   />
                 </SignedIn>
               </>
+            ) : (
+              <Button variant="ghost" size="sm" disabled>
+                Sign In
+              </Button>
             )}
 
             {/* Theme Toggle */}

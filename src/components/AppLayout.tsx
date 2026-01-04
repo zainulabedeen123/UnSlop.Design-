@@ -81,7 +81,7 @@ export function AppLayout({
               )}
               <div className="ml-auto flex items-center gap-2">
                 {/* Clerk Authentication */}
-                {isClerkEnabled && (
+                {isClerkEnabled ? (
                   <>
                     <SignedOut>
                       <SignInButton mode="modal">
@@ -100,6 +100,10 @@ export function AppLayout({
                       />
                     </SignedIn>
                   </>
+                ) : (
+                  <Button variant="ghost" size="sm" disabled>
+                    Sign In
+                  </Button>
                 )}
 
                 {/* Theme Toggle */}
@@ -132,7 +136,7 @@ export function AppLayout({
               {/* Auth, GitHub Link and Theme Toggle */}
               <div className="shrink-0 flex items-center gap-2">
                 {/* Clerk Authentication */}
-                {isClerkEnabled && (
+                {isClerkEnabled ? (
                   <>
                     <SignedOut>
                       <SignInButton mode="modal">
@@ -156,6 +160,10 @@ export function AppLayout({
                       />
                     </SignedIn>
                   </>
+                ) : (
+                  <Button variant="ghost" size="sm" disabled>
+                    Sign In
+                  </Button>
                 )}
 
                 {/* GitHub Link */}
