@@ -1,8 +1,10 @@
 /**
- * Service for managing user's OpenRouter API key in localStorage
+ * Service for managing user's OpenRouter settings in localStorage
+ * Handles API key and model preferences
  */
 
-const STORAGE_KEY = 'unslop_user_openrouter_api_key'
+const API_KEY_STORAGE_KEY = 'unslop_user_openrouter_api_key'
+const MODEL_STORAGE_KEY = 'unslop_user_model_preference'
 
 export const userApiKeyService = {
   /**
@@ -10,7 +12,7 @@ export const userApiKeyService = {
    */
   saveApiKey(apiKey: string): void {
     try {
-      localStorage.setItem(STORAGE_KEY, apiKey)
+      localStorage.setItem(API_KEY_STORAGE_KEY, apiKey)
     } catch (error) {
       console.error('Failed to save API key:', error)
       throw new Error('Failed to save API key to browser storage')
@@ -22,7 +24,7 @@ export const userApiKeyService = {
    */
   getApiKey(): string | null {
     try {
-      return localStorage.getItem(STORAGE_KEY)
+      return localStorage.getItem(API_KEY_STORAGE_KEY)
     } catch (error) {
       console.error('Failed to get API key:', error)
       return null
@@ -34,7 +36,7 @@ export const userApiKeyService = {
    */
   clearApiKey(): void {
     try {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(API_KEY_STORAGE_KEY)
     } catch (error) {
       console.error('Failed to clear API key:', error)
       throw new Error('Failed to clear API key from browser storage')
@@ -66,6 +68,53 @@ export const userApiKeyService = {
     const start = apiKey.substring(0, 12)
     const end = apiKey.substring(apiKey.length - 4)
     return `${start}••••••••${end}`
+  },
+
+  // ============================================
+  // Model Preference Management
+  // ============================================
+
+  /**
+   * Save the user's preferred AI model to localStorage
+   */
+  saveModel(modelId: string): void {
+    try {
+      localStorage.setItem(MODEL_STORAGE_KEY, modelId)
+    } catch (error) {
+      console.error('Failed to save model preference:', error)
+      throw new Error('Failed to save model preference to browser storage')
+    }
+  },
+
+  /**
+   * Get the user's preferred AI model from localStorage
+   */
+  getModel(): string | null {
+    try {
+      return localStorage.getItem(MODEL_STORAGE_KEY)
+    } catch (error) {
+      console.error('Failed to get model preference:', error)
+      return null
+    }
+  },
+
+  /**
+   * Clear the user's preferred AI model from localStorage
+   */
+  clearModel(): void {
+    try {
+      localStorage.removeItem(MODEL_STORAGE_KEY)
+    } catch (error) {
+      console.error('Failed to clear model preference:', error)
+      throw new Error('Failed to clear model preference from browser storage')
+    }
+  },
+
+  /**
+   * Check if the user has saved a model preference
+   */
+  hasModel(): boolean {
+    return this.getModel() !== null
   },
 }
 

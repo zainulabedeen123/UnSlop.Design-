@@ -69,13 +69,16 @@ class AIService {
     return 'none'
   }
 
-  async generate({ prompt, model = DEFAULT_MODEL, systemPrompt }: AIGenerateOptions): Promise<string> {
+  async generate({ prompt, model, systemPrompt }: AIGenerateOptions): Promise<string> {
     // Reinitialize to get latest API key
     this.initializeClient()
 
     if (!this.client) {
       throw new Error('OpenRouter API key not configured. Please add your API key in Settings or configure VITE_OPENROUTER_API_KEY in your .env file.')
     }
+
+    // Determine which model to use (priority: explicit param > user preference > default)
+    const modelToUse = model || userApiKeyService.getModel() || DEFAULT_MODEL
 
     const messages: Array<{ role: 'system' | 'user'; content: string }> = []
 
@@ -88,7 +91,7 @@ class AIService {
     try {
       // OpenRouter uses OpenAI SDK format
       const response = await this.client.chat.completions.create({
-        model,
+        model: modelToUse,
         messages,
       })
 
@@ -99,13 +102,16 @@ class AIService {
     }
   }
 
-  async *stream({ prompt, model = DEFAULT_MODEL, systemPrompt }: AIStreamOptions): AsyncGenerator<string> {
+  async *stream({ prompt, model, systemPrompt }: AIStreamOptions): AsyncGenerator<string> {
     // Reinitialize to get latest API key
     this.initializeClient()
 
     if (!this.client) {
       throw new Error('OpenRouter API key not configured. Please add your API key in Settings or configure VITE_OPENROUTER_API_KEY in your .env file.')
     }
+
+    // Determine which model to use (priority: explicit param > user preference > default)
+    const modelToUse = model || userApiKeyService.getModel() || DEFAULT_MODEL
 
     const messages: Array<{ role: 'system' | 'user'; content: string }> = []
 
@@ -118,7 +124,7 @@ class AIService {
     try {
       // OpenRouter uses OpenAI SDK format with streaming
       const stream = await this.client.chat.completions.create({
-        model,
+        model: modelToUse,
         messages,
         stream: true,
       })
